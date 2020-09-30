@@ -3,15 +3,41 @@ package com.he.addressBook;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
+@Entity(name = "Contact")
 public class Contact {
 
+	@Id
+	@Column(name = "name")
     private String            name;
+	
+	@Column(name = "organisation")
     private String            organisation;
+	
+	@OneToMany(mappedBy = "phoneNumber")
+	@NotFound(action = NotFoundAction.IGNORE)
     private List<PhoneNumber> phoneNumbers;
-    private List<Address>     addresses;
+	
+	@OneToMany(mappedBy = "address")
+	@NotFound(action = NotFoundAction.IGNORE)
+    private List<Address> addresses;
+	
+	Contact() {
+		
+	}
 
     public Contact(String name, String organisation) throws Exception {
         // TODO
+    	
+    	this.name = name;
+    	this.organisation = organisation;
     }
 
     public String getName() {
